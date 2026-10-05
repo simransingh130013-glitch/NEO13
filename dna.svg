@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 900">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#e0aaff"/>
+    <stop offset=".45" stop-color="#9d4edd"/>
+    <stop offset="1" stop-color="#6f2dbd"/>
+  </linearGradient>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="5" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+<g fill="none" stroke="url(#g)" stroke-linecap="round" filter="url(#glow)">
+  <path d="M150 20 C390 110 390 250 150 340 C-90 430 -90 570 150 660 C390 750 390 850 150 880" stroke-width="9"/>
+  <path d="M350 20 C110 110 110 250 350 340 C590 430 590 570 350 660 C110 750 110 850 350 880" stroke-width="9"/>
+  <path d="M190 45 L310 45 M160 125 L340 125 M125 210 L375 210 M115 300 L385 300 M135 385 L365 385 M175 470 L325 470 M125 555 L375 555 M150 645 L350 645 M190 730 L310 730 M145 820 L355 820" stroke-width="4" opacity=".85"/>
+</g>
+<g fill="#e0aaff" opacity=".8">
+  <circle cx="150" cy="20" r="7"/><circle cx="350" cy="20" r="7"/>
+  <circle cx="150" cy="340" r="7"/><circle cx="350" cy="340" r="7"/>
+  <circle cx="150" cy="660" r="7"/><circle cx="350" cy="660" r="7"/>
+</g>
+</svg>

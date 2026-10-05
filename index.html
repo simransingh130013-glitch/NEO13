@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEO 13 — Neural Interface</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="space-background"></div>
+    <div class="purple-haze"></div>
+    <div class="scanlines"></div>
+
+    <!-- DNA -->
+    <div class="dna-container">
+        <img
+            src="assets/dna.svg"
+            class="dna"
+            alt=""
+            aria-hidden="true"
+            onerror="this.style.display='none'; this.parentElement.classList.add('dna-missing');"
+        >
+        <div class="dna-glow"></div>
+    </div>
+
+    <!-- PARTICLES -->
+    <div class="particles" id="particles"></div>
+
+
+    <!-- =====================================
+         MAIN NEO 13 INTERFACE
+    ====================================== -->
+
+    <main class="neo-app" id="mainInterface">
+
+        <!-- HEADER -->
+        <header class="top-bar">
+
+            <div class="brand">
+
+                <div class="brand-symbol">
+                    13
+                </div>
+
+                <div>
+                    <h1>NEO 13</h1>
+                    <span>NEURAL INTERFACE SYSTEM</span>
+                </div>
+
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                SYSTEM ONLINE
+            </div>
+
+        </header>
+
+        <!-- WATCH / BLE LINK -->
+        <section class="watch-link-panel" aria-label="Smartwatch Bluetooth connection">
+            <div class="watch-link-main">
+                <div class="watch-link-kicker">NEO 13 / SMARTWATCH LINK</div>
+                <div class="watch-link-title-row">
+                    <h2>WATCH LINK</h2>
+                    <span class="live-badge" id="dataModeBadge">DEMO DATA</span>
+                </div>
+                <p id="watchStatusText">Bluetooth link ready. Connect a compatible BLE watch to replace demo telemetry with live data.</p>
+            </div>
+            <div class="watch-link-controls">
+                <div class="watch-device-meta">
+                    <span>DEVICE</span>
+                    <strong id="watchDeviceName">NOT CONNECTED</strong>
+                </div>
+                <button class="neo-button primary watch-connect-button" id="connectWatchButton" type="button">◉ CONNECT WATCH</button>
+                <button class="neo-button watch-disconnect-button" id="disconnectWatchButton" type="button" hidden>DISCONNECT</button>
+            </div>
+        </section>
+
+        <!-- HERO -->
+        <section class="hero">
+
+            <div class="hero-info">
+
+                <div class="eyebrow">
+                    NEO TECHNOLOGY / 01
+                </div>
+
+                <h2>
+                    MORE THAN
+                    <span>A DEVICE.</span>
+                </h2>
+
+                <p class="description">
+                    A next-generation interface connecting
+                    intelligence, communication, environment
+                    and human interaction.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button
+                        class="neo-button primary"
+                        data-control="system"
+                    >
+                        <span>◉</span>
+                        INITIALIZE
+                    </button>
+
+                    <button
+                        class="neo-button"
+                        data-control="status"
+                    >
+                        SYSTEM STATUS
+                    </button>
+
+                </div>
+
+                <div class="technical-data">
+
+                    <div>
+                        <span>CORE</span>
+                        <strong>13-X</strong>
+                    </div>
+
+                    <div>
+                        <span>SYNC</span>
+                        <strong>99.8%</strong>
+                    </div>
+
+                    <div>
+                        <span>MODE</span>
+                        <strong>ACTIVE</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CORE -->
+            <div class="core-area">
+
+                <div class="hud-ring ring-one"></div>
+                <div class="hud-ring ring-two"></div>
+                <div class="hud-ring ring-three"></div>
+
+                <div class="hud-corner top-left"></div>
+                <div class="hud-corner top-right"></div>
+                <div class="hud-corner bottom-left"></div>
+                <div class="hud-corner bottom-right"></div>
+
+                <div class="core" id="energyCore" role="button" tabindex="0" aria-label="Activate Energy Core">
+
+                    <div class="core-light"></div>
+
+                    <div class="core-number">
+                        13
+                    </div>
+
+                    <div class="core-title">
+                        NEO CORE
+                    </div>
+
+                    <div class="core-active" id="coreState">● ACTIVE</div>
+                    <div class="core-overdrive">OVERDRIVE</div>
+
+                </div>
+
+                <div class="scanner"></div>
+
+                <div class="floating-data data-one">
+                    <span>CORE SIGNAL</span>
+                    <strong id="signal">98.7%</strong>
+                </div>
+
+                <div class="floating-data data-two">
+                    <span>NEURAL LINK</span>
+                    <strong>CONNECTED</strong>
+                </div>
+
+                <div class="floating-data data-three">
+                    <span>ENERGY</span>
+                    <strong id="energy">87%</strong>
+                </div>
+
+                <div class="floating-data data-four">
+                    <span>SYNC</span>
+                    <strong>ACTIVE</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SYSTEM MODULES
+        ====================================== -->
+
+        <section class="modules-section">
+
+            <div class="section-title">
+                <span>02</span>
+                SYSTEM MODULES
+                <i></i>
+            </div>
+
+
+            <div class="modules">
+
+
+                <button
+                    class="module"
+                    data-control="communication"
+                >
+
+                    <div class="module-number">01</div>
+
+                    <div class="module-icon">
+                        ⌁
+                    </div>
+
+                    <div class="module-info">
+                        <h3>COMM LINK</h3>
+                        <p>Communication interface</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+
+                <button
+                    class="module"
+                    data-control="health"
+                >
+
+                    <div class="module-number">02</div>
+
+                    <div class="module-icon">
+                        ♡
+                    </div>
+
+                    <div class="module-info">
+                        <h3>HEALTH</h3>
+                        <p>Biometric interface</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+
+                <button
+                    class="module"
+                    data-control="gesture"
+                >
+
+                    <div class="module-number">03</div>
+
+                    <div class="module-icon">
+                        ✋
+                    </div>
+
+                    <div class="module-info">
+                        <h3>GESTURE</h3>
+                        <p>Motion control system</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+
+                <button
+                    class="module"
+                    data-control="system"
+                >
+
+                    <div class="module-number">04</div>
+
+                    <div class="module-icon">
+                        ⌘
+                    </div>
+
+                    <div class="module-info">
+                        <h3>SYSTEM</h3>
+                        <p>Diagnostics & control</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+
+                <button
+                    class="module"
+                    data-control="energy"
+                >
+
+                    <div class="module-number">05</div>
+
+                    <div class="module-icon">
+                        ⚡
+                    </div>
+
+                    <div class="module-info">
+                        <h3>ENERGY CORE</h3>
+                        <p>Power management</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+
+                <button
+                    class="module"
+                    data-control="neural"
+                >
+
+                    <div class="module-number">06</div>
+
+                    <div class="module-icon">
+                        ◉
+                    </div>
+
+                    <div class="module-info">
+                        <h3>NEURAL LINK</h3>
+                        <p>Interface synchronization</p>
+                    </div>
+
+                    <span class="arrow">↗</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SYSTEM READINGS -->
+
+        <section class="readings">
+
+            <div class="reading">
+
+                <span>SYSTEM STATUS</span>
+
+                <strong id="systemStatus">
+                    DEMO MODE
+                </strong>
+
+                <div class="bar">
+                    <i></i>
+                </div>
+
+            </div>
+
+
+            <div class="reading">
+
+                <span>CORE TEMPERATURE</span>
+
+                <strong id="temperature">
+                    --°C
+                </strong>
+
+                <small id="temperatureState">WATCH DATA UNAVAILABLE</small>
+
+            </div>
+
+
+            <div class="reading">
+
+                <span>NETWORK</span>
+
+                <strong id="networkStatus">BLE OFFLINE</strong>
+
+                <small id="networkSubstatus">WAITING FOR WATCH</small>
+
+            </div>
+
+
+            <div class="reading">
+
+                <span>POWER</span>
+
+                <strong id="powerStatus">DEMO 87%</strong>
+
+                <small id="powerSubstatus">CONNECT WATCH FOR LIVE BATTERY</small>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+
+            <span>NEO 13 TECHNOLOGIES</span>
+
+            <span>NEURAL SYSTEM / V1.0</span>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================
+         HOLOGRAPHIC CONTROL CENTER
+    ====================================== -->
+
+    <section
+        class="control-center"
+        id="controlCenter"
+    >
+
+        <div class="control-grid"></div>
+
+        <div class="control-scanline"></div>
+
+
+        <!-- CONTROL HEADER -->
+
+        <header class="control-header">
+
+            <div class="control-brand">
+
+                <button
+                    class="back-button"
+                    id="backButton"
+                >
+                    ←
+                </button>
+
+                <div>
+
+                    <span>
+                        NEO 13 / HOLOGRAPHIC SYSTEM
+                    </span>
+
+                    <h1 id="controlTitle">
+                        SYSTEM CONTROL
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+            <div class="control-online">
+
+                <span></span>
+
+                CONTROL CENTER ONLINE
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTROL CONTENT -->
+
+        <div class="control-content">
+
+
+            <!-- LEFT INFORMATION -->
+
+            <div class="control-information">
+
+                <div class="control-index">
+                    MODULE / <span id="controlNumber">04</span>
+                </div>
+
+                <h2 id="controlHeading">
+                    SYSTEM
+                </h2>
+
+                <p id="controlDescription">
+                    NEO 13 system diagnostics and
+                    interface controls are active.
+                </p>
+
+
+                <!-- LIVE VALUES -->
+
+                <div class="control-values">
+
+                    <div>
+
+                        <span>SIGNAL</span>
+
+                        <strong id="controlSignal">
+                            98.7%
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>ENERGY</span>
+
+                        <strong id="controlEnergy">
+                            87%
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>CORE TEMP</span>
+
+                        <strong id="controlTemperature">
+                            36.4°C
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="watch-live-mini" id="watchLiveMini">
+                    <div><span>HEART RATE</span><strong id="liveHeartRate">-- BPM</strong></div>
+                    <div><span>BATTERY</span><strong id="liveBattery">--%</strong></div>
+                    <div><span>BLE SERVICES</span><strong id="liveServices">0</strong></div>
+                </div>
+
+
+                <!-- CONTROL BUTTONS -->
+
+                <div class="control-actions">
+
+                    <button class="control-action active">
+                        ACTIVATE
+                    </button>
+
+                    <button class="control-action">
+                        DIAGNOSTIC
+                    </button>
+
+                    <button class="control-action">
+                        SYNCHRONIZE
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- HOLOGRAPHIC CORE -->
+
+            <div class="hologram-area">
+
+                <div class="holo-ring holo-one"></div>
+
+                <div class="holo-ring holo-two"></div>
+
+                <div class="holo-ring holo-three"></div>
+
+
+                
+                <div class="module-visual" id="moduleVisual">
+                    <div class="visual-wave"></div>
+                    <div class="visual-wave wave-two"></div>
+                    <div class="visual-points"></div>
+                    <div class="visual-hand">✋</div>
+                    <div class="visual-heart">♡</div>
+                    <div class="visual-bolt">⚡</div>
+                    <div class="visual-neural">◉</div>
+                </div>
+
+<div class="hologram-core">
+
+                    <div class="holo-light"></div>
+
+                    <span class="holo-number">
+                        13
+                    </span>
+
+                    <small>
+                        NEO CORE
+                    </small>
+
+                    <b>
+                        ● LINKED
+                    </b>
+
+                </div>
+
+
+                <div class="holo-beam"></div>
+
+
+                <div class="holo-label label-top">
+                    NEURAL SIGNAL
+                </div>
+
+                <div class="holo-label label-right">
+                    CORE ACTIVE
+                </div>
+
+                <div class="holo-label label-bottom">
+                    SYSTEM SYNCHRONIZED
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT STATUS -->
+
+            <div class="control-status-panel">
+
+                <div class="panel-heading">
+                    LIVE SYSTEM
+                </div>
+
+
+                <div class="status-item">
+
+                    <div>
+                        <span>NEURAL LINK</span>
+                        <strong>CONNECTED</strong>
+                    </div>
+
+                    <i class="online-indicator"></i>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div>
+                        <span>CORE</span>
+                        <strong>OPERATIONAL</strong>
+                    </div>
+
+                    <i class="online-indicator"></i>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div>
+                        <span>NETWORK</span>
+                        <strong>SECURE</strong>
+                    </div>
+
+                    <i class="online-indicator"></i>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <div>
+                        <span>POWER SYSTEM</span>
+                        <strong>STABLE</strong>
+                    </div>
+
+                    <i class="online-indicator"></i>
+
+                </div>
+
+
+                <div class="ble-debug-panel">
+                    <div class="panel-heading">BLE DISCOVERY</div>
+                    <div class="ble-debug-row"><span>SERVICES</span><strong id="debugServiceCount">0</strong></div>
+                    <div class="ble-debug-row"><span>CHARACTERISTICS</span><strong id="debugCharacteristicCount">0</strong></div>
+                    <div class="ble-debug-row"><span>LAST PACKET</span><strong id="debugPacketLabel">NONE</strong></div>
+                    <pre id="bleDebugOutput">Press CONNECT WATCH to discover the Bluetooth GATT profile.</pre>
+                </div>
+
+                <div class="system-code">
+
+                    NEO-13X
+
+                    <span>
+                        HOLOGRAPHIC CONTROL PROTOCOL
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTROL FOOTER -->
+
+        <footer class="control-footer">
+
+            <span>
+                NEO 13 TECHNOLOGIES
+            </span>
+
+            <span>
+                SECURE INTERFACE
+            </span>
+
+            <span>
+                V1.0 / ACTIVE
+            </span>
+
+        </footer>
+
+    </section>
+
+
+    <script src="ble_manager.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
