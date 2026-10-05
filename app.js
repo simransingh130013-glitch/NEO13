@@ -34,7 +34,13 @@ const watch = {
     debugServiceCount: document.getElementById("debugServiceCount"),
     debugCharacteristicCount: document.getElementById("debugCharacteristicCount"),
     debugPacketLabel: document.getElementById("debugPacketLabel"),
-    debugOutput: document.getElementById("bleDebugOutput")
+    debugOutput: document.getElementById("bleDebugOutput"),
+    discoveryState: document.getElementById("bleDiscoveryState"),
+    customServiceUuid: document.getElementById("customServiceUuid"),
+    addServiceUuid: document.getElementById("addServiceUuidButton"),
+    customUuidList: document.getElementById("customUuidList"),
+    clearDebug: document.getElementById("clearBleDebugButton"),
+    copyDebug: document.getElementById("copyBleDebugButton")
 };
 
 const energyCore = document.getElementById("energyCore");
@@ -231,7 +237,9 @@ async function connectWatch() {
     }
 
     watch.connect?.setAttribute("disabled", "disabled");
+    window.NEO13BLE.setCustomServiceUuids(Array.from(customServiceUuids));
     setText(watch.status, "OPENING BLUETOOTH DEVICE SELECTOR...");
+    setText(watch.discoveryState, "SELECT YOUR WATCH. STANDARD + CUSTOM SERVICE PROBES ARE READY.");
 
     try {
         await window.NEO13BLE.connect();
@@ -255,7 +263,56 @@ async function disconnectWatch() {
 watch.connect?.addEventListener("click", connectWatch);
 watch.disconnect?.addEventListener("click", disconnectWatch);
 
+const customServiceUuids = new Set();
+function renderCustomUuidList() {
+    if (!watch.customUuidList) return;
+    watch.customUuidList.innerHTML = "";
+    customServiceUuids.forEach(uuid => {
+        const chip = document.createElement("span");
+        chip.className = "ble-uuid-chip";
+        chip.textContent = uuid;
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.title = "Remove UUID";
+        remove.addEventListener("click", () => {
+            customServiceUuids.delete(uuid);
+            renderCustomUuidList();
+        });
+        chip.appendChild(remove);
+        watch.customUuidList.appendChild(chip);
+    });
+}
+
+watch.addServiceUuid?.addEventListener("click", () => {
+    const uuid = watch.customServiceUuid?.value.trim().toLowerCase();
+    const valid = /^[0-9a-f]{4}$/.test(uuid) || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(uuid);
+    if (!valid) {
+        setText(watch.discoveryState, "INVALID UUID — USE 4 HEX DIGITS OR A FULL 128-BIT UUID.");
+        return;
+    }
+    customServiceUuids.add(uuid);
+    if (watch.customServiceUuid) watch.customServiceUuid.value = "";
+    renderCustomUuidList();
+    setText(watch.discoveryState, "CUSTOM UUID ADDED. RECONNECT WATCH TO PROBE IT.");
+});
+
+watch.clearDebug?.addEventListener("click", () => {
+    setText(watch.debugPacketLabel, "NONE");
+    if (watch.debugOutput) watch.debugOutput.textContent = "LOG CLEARED. CONNECT WATCH TO START DISCOVERY.";
+});
+
+watch.copyDebug?.addEventListener("click", async () => {
+    try {
+        await navigator.clipboard.writeText(watch.debugOutput?.textContent || "");
+        setText(watch.discoveryState, "BLE LOG COPIED TO CLIPBOARD.");
+    } catch (_) {
+        setText(watch.discoveryState, "CLIPBOARD COPY UNAVAILABLE IN THIS BROWSER.");
+    }
+});
+
 if (window.NEO13BLE) {
+    window.NEO13BLE.setCustomServiceUuids(Array.from(customServiceUuids));
     window.NEO13BLE.addEventListener("status", event => {
         const state = event.detail.state;
         if (state === "connecting") {
@@ -289,6 +346,10 @@ if (window.NEO13BLE) {
         updateMainUI();
     });
 
+    window.NEO13BLE.addEventListener("discoveryState", event => {
+        setText(watch.discoveryState, event.detail.message || "BLE DISCOVERY ACTIVE.");
+    });
+
     window.NEO13BLE.addEventListener("discovery", event => {
         neo13Data.ble.services = event.detail.services || [];
         neo13Data.ble.characteristics = event.detail.characteristics || [];
@@ -297,14 +358,21 @@ if (window.NEO13BLE) {
         setText(watch.debugCharacteristicCount, neo13Data.ble.characteristics.length);
 
         const lines = [];
+        lines.push(`DEVICE: ${neo13Data.connection.deviceName || "UNKNOWN"}`);
+        lines.push(`PERMITTED SERVICE PROBES: ${(event.detail.optionalServices || []).join(", ")}`);
+        if (event.detail.customServiceUuids?.length) {
+            lines.push(`CUSTOM UUID PROBES: ${event.detail.customServiceUuids.join(", ")}`);
+        }
+        lines.push("");
         neo13Data.ble.services.forEach(service => {
             lines.push(`SERVICE  ${service.uuid}`);
             service.characteristics.forEach(characteristic => {
                 lines.push(`  └─ ${characteristic.uuid}`);
-                lines.push(`     ${characteristic.properties.join(" / ").toUpperCase() || "NO PROPERTIES"}`);
+                lines.push(`     SERVICE: ${characteristic.serviceUuid}`);
+                lines.push(`     PROPERTIES: ${characteristic.properties.join(" / ").toUpperCase() || "NONE"}`);
             });
         });
-        watch.debugOutput.textContent = lines.length ? lines.join("\n") : "No permitted standard BLE services were discovered. Proprietary services require their UUIDs.";
+        watch.debugOutput.textContent = lines.length > 4 ? lines.join("\n") : "NO PERMITTED GATT SERVICES WERE EXPOSED. THE WATCH MAY USE A PROPRIETARY SERVICE. ADD ITS REAL SERVICE UUID ABOVE AND RECONNECT.";
         updateMainUI();
     });
 
@@ -325,7 +393,7 @@ if (window.NEO13BLE) {
     window.NEO13BLE.addEventListener("packet", event => {
         neo13Data.ble.lastPacket = event.detail;
         setText(watch.debugPacketLabel, event.detail.label);
-        watch.debugOutput.textContent += `\n\n[${event.detail.label}] ${event.detail.hex}\n${event.detail.timestamp}`;
+        watch.debugOutput.textContent += `\n\n[${event.detail.label}]\nSERVICE: ${event.detail.serviceUuid || "UNKNOWN"}\nPROPERTIES: ${(event.detail.properties || []).join(" / ").toUpperCase() || "UNKNOWN"}\nBYTES: ${event.detail.byteLength ?? "?"}\nHEX: ${event.detail.hex}\n${event.detail.timestamp}`;
         if (watch.debugOutput.textContent.length > 9000) {
             watch.debugOutput.textContent = watch.debugOutput.textContent.slice(-9000);
         }

@@ -1408,3 +1408,20 @@ button{font:inherit}
     .watch-connect-button,.watch-disconnect-button{width:100%}
     .watch-live-mini{grid-template-columns:1fr}
 }
+
+/* =========================================
+   NEO 13 — ENHANCED BLE DISCOVERY PANEL
+========================================= */
+.ble-discovery-tools{display:grid;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(190,110,255,.2)}
+.ble-discovery-tools .ble-tool-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ble-discovery-tools input{flex:1;min-width:190px;background:rgba(10,5,18,.72);border:1px solid rgba(190,110,255,.35);color:#f5eaff;padding:10px 12px;font-family:inherit;font-size:11px;letter-spacing:.08em;outline:none}
+.ble-discovery-tools input:focus{border-color:rgba(205,140,255,.85);box-shadow:0 0 18px rgba(160,70,255,.16)}
+.ble-mini-button{background:rgba(120,40,190,.08);border:1px solid rgba(190,110,255,.35);color:#e8d8ff;padding:9px 12px;font-family:inherit;font-size:10px;letter-spacing:.14em;cursor:pointer}
+.ble-mini-button:hover{border-color:rgba(220,160,255,.9);box-shadow:0 0 18px rgba(160,70,255,.22)}
+.ble-uuid-list{display:flex;gap:6px;flex-wrap:wrap}
+.ble-uuid-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid rgba(190,110,255,.25);background:rgba(130,50,190,.06);font-size:9px;letter-spacing:.06em;color:#cdb6e8}
+.ble-uuid-chip button{border:0;background:transparent;color:#c78cff;cursor:pointer;font-size:12px;padding:0}
+.ble-discovery-note{font-size:9px;line-height:1.55;color:rgba(235,218,250,.58);letter-spacing:.08em}
+.ble-discovery-state{font-size:10px;letter-spacing:.12em;color:#dcbcff}
+.ble-debug-panel pre{max-height:300px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+@media(max-width:600px){.ble-discovery-tools input{min-width:100%;}.ble-mini-button{flex:1}.ble-discovery-tools .ble-tool-row{align-items:stretch}}

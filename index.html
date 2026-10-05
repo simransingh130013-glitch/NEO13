@@ -678,11 +678,25 @@
 
 
                 <div class="ble-debug-panel">
-                    <div class="panel-heading">BLE DISCOVERY</div>
+                    <div class="panel-heading">BLE DISCOVERY / DEVELOPER MODE</div>
                     <div class="ble-debug-row"><span>SERVICES</span><strong id="debugServiceCount">0</strong></div>
                     <div class="ble-debug-row"><span>CHARACTERISTICS</span><strong id="debugCharacteristicCount">0</strong></div>
                     <div class="ble-debug-row"><span>LAST PACKET</span><strong id="debugPacketLabel">NONE</strong></div>
-                    <pre id="bleDebugOutput">Press CONNECT WATCH to discover the Bluetooth GATT profile.</pre>
+                    <div class="ble-discovery-state" id="bleDiscoveryState">READY — CONNECT WATCH TO START GATT DISCOVERY</div>
+                    <pre id="bleDebugOutput">Press CONNECT WATCH to discover permitted Bluetooth GATT services and characteristics.</pre>
+
+                    <div class="ble-discovery-tools">
+                        <div class="ble-tool-row">
+                            <input id="customServiceUuid" type="text" inputmode="text" autocomplete="off" placeholder="Optional custom service UUID (e.g. 12345678-...)" aria-label="Custom BLE service UUID">
+                            <button class="ble-mini-button" id="addServiceUuidButton" type="button">ADD UUID</button>
+                        </div>
+                        <div class="ble-uuid-list" id="customUuidList"></div>
+                        <div class="ble-tool-row">
+                            <button class="ble-mini-button" id="clearBleDebugButton" type="button">CLEAR LOG</button>
+                            <button class="ble-mini-button" id="copyBleDebugButton" type="button">COPY LOG</button>
+                        </div>
+                        <div class="ble-discovery-note">STANDARD PROFILE PROBES ARE ENABLED. CUSTOM UUIDS ARE OPTIONAL. PROPRIETARY WATCH SERVICES CANNOT BE INVENTED; ADD A REAL SERVICE UUID TO PROBE IT ON THE NEXT CONNECTION.</div>
+                    </div>
                 </div>
 
                 <div class="system-code">
